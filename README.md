@@ -10,9 +10,12 @@ Temos neste repositório uma aplicação em Java com uma API REST que responde u
 
 * Containerize essa aplicação
 * Crie um Helm chart contendo todos os componentes necessários para essa aplicação rodar em um cluster de Kubernetes
-* Crie uma pipeline com GitLab CI para esse chart ser aplicado em um cluster de Kubernetes (pode usar o minikube)
-* Provisione uma infraestrutura na AWS com terraform para subir essa aplicação containerizada (Lembre-se de utilizar EC2, ELB, ASG entre outros serviços da AWS )
-* Crie um pipeline com GitLab CI para automatizar a execução destes passos e subir essa infraestrutura na AWS
+* Crie um repositório no AWS CodeCommit e habilite o Mirror com o repositório no Github.
+* Crie uma pipeline com AWS CodePipeline para esse chart ser aplicado em um cluster de Kubernetes (pode usar o AWS EKS ou ECS)
+* Provisione uma infraestrutura na AWS com terraform ou cloudformation para subir essa aplicação containerizada (Lembre-se de utilizar ELB, ASG, Route53 entre outros serviços da AWS )
+
+Tarefa bônus - não obrigatória - apenas será um diferencial na sua entrega.
+* Crie um alerta com AWS CloudWatch para validar se algum step do AWS CodePipeline falhar e enviar um e-mail.
 
 ## Alguma dicas que podem ser importantes:
 * Qualidade da documentacão
