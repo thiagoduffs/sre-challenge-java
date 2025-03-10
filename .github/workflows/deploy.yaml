@@ -1,0 +1,79 @@
+name: Deploy Java App on EKS
+
+on:
+  push:
+    branches:
+      - develop  
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: "us-east-1"
+      CLUSTER_NAME: "sre-challenge-eks"
+      NAMESPACE: "sre-challenge-java"
+      IMAGE_NAME: "thicarvalho/sre-challenge-java"
+      IMAGE_TAG: "v1.0"  # Se quiser versão dinâmica, altere no final
+
+    steps:
+      - name: 📥 Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: 🔧 Configurar AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: 🔧 Configurar kubectl
+        run: |
+          aws eks update-kubeconfig --name $CLUSTER_NAME --region $AWS_REGION
+          kubectl get nodes  # Apenas para validar conexão com cluster
+
+      - name: 🔨 Build da Aplicação Java (Maven)
+        run: |
+          cd app
+          chmod +x mvnw
+          ./mvnw clean package -DskipTests
+          ls -lh target/
+
+      - name: 🔑 Login no DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: 🏗️ Build da Imagem Docker
+        run: |
+          docker build --no-cache -t $IMAGE_NAME:$IMAGE_TAG .
+
+      - name: 🏥 Testes de Saúde da Aplicação
+        run: |
+          docker run --rm -d --name test-app -p 8080:8080 $IMAGE_NAME:$IMAGE_TAG
+          echo "Aguardando aplicação subir..."
+          sleep 15
+          if curl -f http://localhost:8080; then
+            echo "Teste passou ✅"
+          else
+            echo "Teste falhou ❌"
+            docker logs test-app
+            exit 1
+          fi
+          docker stop test-app
+
+      - name: 🚀 Push da Imagem para o DockerHub
+        run: |
+          docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: ⚙️ Aplicar o Helm Chart no EKS
+        run: |
+          helm upgrade --install java-app ./sre-challenge-java --namespace $NAMESPACE --create-namespace \
+            --set image.repository=$IMAGE_NAME \
+            --set image.tag=$IMAGE_TAG
+
+      - name: 🔍 Verificar Deploy no EKS
+        run: |
+          kubectl get pods -n $NAMESPACE
+          kubectl get svc -n $NAMESPACE
