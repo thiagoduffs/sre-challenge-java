@@ -83,6 +83,12 @@ resource "aws_eks_cluster" "eks_cluster" {
     endpoint_public_access = true
   }
 
+  tags = {
+    Name                                  = "sre-challenge-eks"
+    "k8s.io/cluster-autoscaler/enabled"   = "true"
+    "k8s.io/cluster-autoscaler/sre-challenge-eks" = "true"
+  }
+
   depends_on = [aws_iam_role_policy_attachment.eks_policy]
 }
 
@@ -124,12 +130,18 @@ resource "aws_eks_node_group" "eks_nodes" {
   subnet_ids      = aws_subnet.eks_subnets[*].id
 
   scaling_config {
-    desired_size = 1  # Free Tier
+    desired_size = 2  # Free Tier
     max_size     = 2
     min_size     = 1
   }
 
   instance_types = [var.instance_type]
+
+  tags = {
+    Name                                  = "eks-node-group"
+    "k8s.io/cluster-autoscaler/enabled"   = "true"
+    "k8s.io/cluster-autoscaler/sre-challenge-eks" = "true"
+  }
 
   depends_on = [aws_iam_role_policy_attachment.node_policy]
 }
