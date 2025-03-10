@@ -1,0 +1,75 @@
+# ==============================
+# 🔥 Terraform
+# ==============================
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.tfvars
+*.tfvars.json
+
+# ==============================
+# 🚀 Helm (Charts e Releases)
+# ==============================
+*.tgz
+.chart/
+charts/
+.tmp/
+values.yaml
+
+# ==============================
+# ☸️ Kubernetes (Manifests e Configs)
+# ==============================
+kubeconfig
+.kube/
+.kube/cache
+.kube/config
+config.yaml
+
+# ==============================
+# ☕ Java / Maven (Aplicação)
+# ==============================
+target/
+*.jar
+*.war
+*.ear
+*.class
+*.log
+hs_err_pid*
+.mvn/
+*.iml
+
+# ==============================
+# 🐳 Docker
+# ==============================
+.dockerignore
+.docker/
+docker-compose.override.yml
+
+# ==============================
+# 🛠️ IDEs & Ferramentas
+# ==============================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+*.bak
+*.log
+*.lock
+
+# ==============================
+# 📜 Logs & Outros
+# ==============================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+*.out
