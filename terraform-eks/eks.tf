@@ -7,7 +7,5 @@ resource "aws_eks_cluster" "eks_cluster" {
     endpoint_public_access = true
   }
 
-  tags = {}
-
   depends_on = [aws_iam_role_policy_attachment.eks_policy]
 }
