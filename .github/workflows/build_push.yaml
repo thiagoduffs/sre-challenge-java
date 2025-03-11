@@ -1,0 +1,33 @@
+name: Build and Push to DockerHub
+
+on:
+  push:
+    branches:
+      - develop  # Executa apenas na develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: "thicarvalho/sre-challenge-java"
+      IMAGE_TAG: "v1.0"
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Login no DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build da Imagem Docker
+        run: docker build -t $IMAGE_NAME:$IMAGE_TAG .
+
+      - name: Push da Imagem para o DockerHub
+        run: docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: Conclusão
+        run: echo "✅ Build e push concluídos com sucesso!"
