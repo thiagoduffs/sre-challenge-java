@@ -1,0 +1,13 @@
+# Copie este arquivo para terraform.tfvars e preencha os valores
+# NAO versione o terraform.tfvars (esta no .gitignore)
+
+project_name = "meu-projeto"
+environment  = "prod"
+team_name    = "sre"
+aws_region   = "us-east-1"
+
+# Glue
+glue_database_name  = ""
+data_lake_bucket    = ""
+glue_scripts_bucket = ""
+glue_temp_bucket    = ""
