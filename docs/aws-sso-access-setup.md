@@ -78,7 +78,7 @@ aws configure sso
 
 O assistente vai pedir:
 - **SSO session name:** `vexpenses` (nome que identifica sua organização)
-- **SSO start URL:** O URL do portal SSO da sua empresa (algo como `https://vexpenses.awsapps.com/start` ou o URL fornecido pelo time)
+- **SSO start URL:** `https://vexsso.awsapps.com/start`
 - **SSO region:** A região onde o SSO está configurado (ex: `us-east-1`)
 - **SSO registration scopes:** `sso:account:access` (permite acesso às contas)
 
@@ -88,7 +88,7 @@ Após isso, o browser abrirá para você autenticar. Após autenticar, o CLI mos
 
 Depois de fazer a configuração inicial para descobrir o `sso_start_url` e `sso_region`, edite diretamente o arquivo `~/.aws/config` com todas as 7 contas de uma vez.
 
-> **IMPORTANTE:** Substitua `SSO_START_URL_DA_SUA_EMPRESA` pelo URL real do portal SSO. Pergunte ao SRE sênior do seu time qual é o URL (geralmente algo como `https://vexpenses.awsapps.com/start` ou `https://d-xxxxxxxxxx.awsapps.com/start`).
+> O URL do portal SSO já está configurado: `https://vexsso.awsapps.com/start`
 
 ```bash
 # Crie/edite o arquivo de configuração
@@ -103,7 +103,7 @@ Cole o conteúdo abaixo (ajustando o `sso_start_url` e `sso_region`):
 # Sessão SSO compartilhada - um login para todas as contas
 # ===========================================================
 [sso-session vexpenses]
-sso_start_url = SSO_START_URL_DA_SUA_EMPRESA
+sso_start_url = https://vexsso.awsapps.com/start
 sso_region = us-east-1
 sso_registration_scopes = sso:account:access
 
