@@ -201,32 +201,35 @@ aws eks update-kubeconfig --name meu-cluster --profile sharedservices
 
 ### 2.5 Atalhos úteis para o shell
 
-Adicione ao seu `~/.bashrc` ou `~/.zshrc`:
+Adicione ao arquivo de configuração do seu shell:
+
+- **Zsh** (padrão em muitas distros): `~/.zshrc`
+- **Bash**: `~/.bashrc`
 
 ```bash
-# Aliases para trocar rapidamente de conta
-alias aws-data-dev='export AWS_PROFILE=data-dev && echo "Usando: Data - Development (816069169559)"'
-alias aws-data-prd='export AWS_PROFILE=data-prd && echo "Usando: Data - Production (310777426584)"'
-alias aws-devstaging='export AWS_PROFILE=devstaging && echo "Usando: DevStaging (902671150478)"'
-alias aws-marketing='export AWS_PROFILE=marketing && echo "Usando: Marketing (035858302639)"'
-alias aws-pay='export AWS_PROFILE=pay && echo "Usando: Pay (140034130142)"'
-alias aws-shared='export AWS_PROFILE=sharedservices && echo "Usando: SharedServices (237559827662)"'
-alias aws-vex='export AWS_PROFILE=vexpenses && echo "Usando: VExpenses (142992156239)"'
+nano ~/.zshrc   # ou ~/.bashrc se usar bash
+```
 
-# Mostrar qual conta está ativa
-alias aws-whoami='aws sts get-caller-identity'
+Cole no final do arquivo:
 
-# Login SSO
+```bash
+# === AWS SSO Aliases ===
 alias aws-login='aws sso login --sso-session vexpenses'
-
-# Listar todos os profiles disponíveis
+alias aws-data-dev='export AWS_PROFILE=data-dev && echo "-> Data - Development (816069169559)"'
+alias aws-data-prd='export AWS_PROFILE=data-prd && echo "-> Data - Production (310777426584)"'
+alias aws-devstaging='export AWS_PROFILE=devstaging && echo "-> DevStaging (902671150478)"'
+alias aws-marketing='export AWS_PROFILE=marketing && echo "-> Marketing (035858302639)"'
+alias aws-pay='export AWS_PROFILE=pay && echo "-> Pay (140034130142)"'
+alias aws-shared='export AWS_PROFILE=sharedservices && echo "-> SharedServices (237559827662)"'
+alias aws-vex='export AWS_PROFILE=vexpenses && echo "-> VExpenses (142992156239)"'
+alias aws-whoami='aws sts get-caller-identity'
 alias aws-profiles='aws configure list-profiles'
 ```
 
-Depois de salvar:
+Depois de salvar, carregue as alterações:
 
 ```bash
-source ~/.bashrc
+source ~/.zshrc   # ou source ~/.bashrc se usar bash
 ```
 
 Agora basta digitar, por exemplo:
